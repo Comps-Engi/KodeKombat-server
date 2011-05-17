@@ -1,17 +1,18 @@
 <?php
-include 'conn.php';
-session_start();
+include 'setup.php';
+
 if(isset($_SESSION['id']))
 {
-	$id = $_SESSION['id'];
-	$name = mysql_result(mysql_query("SELECT name FROM contestant WHERE id=$id"), 0);
-	$email = mysql_result(mysql_query("SELECT email FROM contestant WHERE id=$id"), 0);
-	$contact = mysql_result(mysql_query("SELECT contact FROM contestant WHERE id=$id"), 0);
-	$uname = mysql_result(mysql_query("SELECT uname FROM contestant WHERE id=$id"), 0);
-	$score = mysql_result(mysql_query("SELECT score FROM bot WHERE contestantID=$id"), 0);
+    $id      = $_SESSION['id'];
+    // FIXME: Wtf!! Use an ORM!
+    $name    = mysql_result(db_query("SELECT name FROM contestant WHERE id=%d", $id), 0);
+    $email   = mysql_result(db_query("SELECT email FROM contestant WHERE id=%d", $id), 0);
+    $contact = mysql_result(db_query("SELECT contact FROM contestant WHERE id=%d", $id), 0);
+    $uname   = mysql_result(db_query("SELECT uname FROM contestant WHERE id=%d", $id), 0);
+    $score   = mysql_result(db_query("SELECT score FROM bot WHERE contestantID=%d", $id), 0);
 }
 else
-	header("Location: http://localhost/dge/index.php");
+    redirect('');
 ?>
 <html>
 <head><title><?php echo $name ?>'s Profile</title>
@@ -22,18 +23,18 @@ else
 <?php
 if(isset($_GET["success"]))
 {
-	if($_GET["success"] == 1 && isset($_SESSION['id']))
-		echo "Login successful.";
+    if($_GET["success"] == 1 && isset($_SESSION['id']))
+        echo "Login successful.";
 }
 if(isset($_GET["newusr"]))
 {
-	if($_GET["newusr"] == 1 && isset($_SESSION['id']))
-		echo "User created.";
+    if($_GET["newusr"] == 1 && isset($_SESSION['id']))
+        echo "User created.";
 }
 if(isset($_GET["upload"]))
 {
-	if($_GET["upload"] == 1)
-		echo "Bot uploaded successfully";
+    if($_GET["upload"] == 1)
+        echo "Bot uploaded successfully";
 }
 ?>
 </div><br /><br />
@@ -46,48 +47,47 @@ if(isset($_GET["upload"]))
 </table>
 <hr />
 <?php
-$bid = mysql_result(mysql_query("Select botID from bot, contestant where bot.contestantID=contestant.id and contestant.id=$id"),0);
-$query = mysql_query("Select * from matches where contestantID1=$bid or contestantID2=$bid ORDER BY matchid DESC LIMIT 10");
+$bid = mysql_result(db_query("Select botID from bot, contestant where bot.contestantID=contestant.id and contestant.id=%d", $id),0);
+$query = db_query("Select * from matches where contestantID1=%d or contestantID2=%d ORDER BY matchid DESC LIMIT 10", $bid, $bid);
 if($query)
 {
-	echo "<b>Matches:</b><br /><table>";
-	$row = mysql_fetch_array($query);
-	do
-	{
-		if ($row[0]==$bid)
-		{
-			if ($row[4]=0)
-				echo "Match $row[2] won against bot $row[1]<br />";
-			else
-				echo "Match $row[2] lost against bot $row[1]<br />";
-		}
-		elseif($row[1] = $bid)
-		{
-			if  ($row[4]=0)
-				echo "Match $row[2] lost against bot $row[0]<br />";
-			else
-				echo "Match $row[2] won against bot $row[0]<br />";
-		}
-//		echo "<tr><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[4]</td></tr>";
-		$row = mysql_fetch_array($query);
-	}while($row);
-	echo "</table>";
+    echo "<b>Matches:</b><br /><table>";
+
+    while($row = mysql_fetch_array($query))
+    {
+        if ($row[0]==$bid)
+        {
+            if ($row[4]=0)
+                echo "Match $row[2] won against bot $row[1]<br />";
+            else
+                echo "Match $row[2] lost against bot $row[1]<br />";
+        }
+        elseif($row[1] = $bid)
+        {
+            if  ($row[4]=0)
+                echo "Match $row[2] lost against bot $row[0]<br />";
+            else
+                echo "Match $row[2] won against bot $row[0]<br />";
+        }
+//        echo "<tr><td>$row[0]</td><td>$row[1]</td><td>$row[2]</td><td>$row[4]</td></tr>";
+    }
+    echo "</table>";
 }
 ?>
 <hr />
 <?php
-$res = mysql_result(mysql_query("SELECT botID FROM bot where contestentID=$id"), 0);
+$res = mysql_result(db_query("SELECT botID FROM bot where contestantID=%d", $id), 0);
 if($res)
-	echo "<b>Upload bot: </b>";
+    echo "<b>Upload bot: </b>";
 else
-	echo "<b>Reload bot: </b>";
+    echo "<b>Reload bot: </b>";
 ?>
-<form action="http://localhost/dge/upload_bot.php" method="post" enctype="multipart/form-data">
+<form action="<?php echo make_url('upload_bot.php') ?>" method="post" enctype="multipart/form-data">
 <input type="file" name="bot" id="file" /> 
 <br />
 <input type="submit" name="submit" value="Submit" />
 </form>
-<a href="http://localhost/dge/close.php">Log out</a>
+<a href="<?php echo make_url('close.php')?>">Log out</a>
 </body>
 </center>
 </html>

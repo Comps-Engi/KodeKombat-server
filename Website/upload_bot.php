@@ -1,6 +1,6 @@
 <?php
-include 'conn.php';
-session_start();
+include 'setup.php';
+
 $id = $_SESSION['id'];
 
 $fileName = $_FILES['bot']['name'];
@@ -10,25 +10,32 @@ $fileType = $_FILES['bot']['type'];
 
 $fp      = fopen($tmpName, 'r');
 $content = fread($fp, filesize($tmpName));
-$content = mysql_real_escape_string($content);
+
 fclose($fp);
 
-$res = mysql_fetch_array(mysql_query("SELECT botID FROM bot where contestantID=$id"));
+$res = mysql_fetch_array(db_query("SELECT botID FROM bot where contestantID=%d", $id));
 if($res[0])
 {
-	$query = mysql_query("UPDATE bot SET code='$content' WHERE contestantID=$id");
+    $query = db_query("UPDATE bot SET code='%s' WHERE contestantID=%d",
+                $content, $id);
+    if (!$query) {
+        throw new ServerException('Could not update the bot.');
+    }
 }
 else
 {
-	$token = mysql_fetch_array(mysql_query("SELECT MIN(token) FROM bot"));
-	$token = $token[0];
+    $token = mysql_fetch_array(db_query("SELECT MIN(token) FROM bot"));
+    $token = $token[0];
 
-	echo $content;
-
-	$query = mysql_query("INSERT INTO bot (filesize, filetype, contestantID, code, sflag, token, score) VALUES ($fileSize, '$fileType', $id, '$content', 0, $token, 2500)");
+?>
+<pre class="bot-content">
+    <?php echo htmlspecialchars($content) ?>
+</pre>
+<?php
+    $query = db_query("INSERT INTO bot (filesize, filetype, contestantID, code, sflag, token, score) VALUES ($fileSize, '$fileType', $id, '$content', 0, $token, 2500)");
 }
 if($query !=false)
-	header( 'Location: http://localhost/dge/profile.php/?upload=1' );
+    redirect( 'profile.php/?upload=1' );
 else
-	echo "ERROR"
+    throw new ServerException('An error occured while saving the bot.');
 ?>
