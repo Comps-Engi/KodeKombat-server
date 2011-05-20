@@ -4,7 +4,7 @@ require_once 'setup.php';
 
 $view = array();
 
-get('', 'index', function() {
+get('/', 'index', function() {
     if (fAuthorization::checkLoggedIn()) {
         redirect('profile');
     }
@@ -26,7 +26,9 @@ post('/login', 'login', function() {
 
 post('/user', 'newuser', function() {
     $user = User::populate();
-    $user->setPassword(password_salt($user->getPassword()));
+    $user->setPassword(
+        password_salt($user->getPassword())
+    );
     $user->store();
 });
 
@@ -48,7 +50,7 @@ get('/bots', 'listbots', function () {
 
 get('/bot/:id', 'showbot', function () {
     // TODO: Show a bot
-})
+});
 
 post('/bot', 'newbot', function () {
     // TODO: Upload a bot
