@@ -112,11 +112,12 @@ function url($action, $args) {
 }
 
 function render($template) {
-    global $view;
+    global $view, $config;
 
     if (empty($view['title'])) {
         $view['title'] = ucfirst($template);
     }
+    $view['config'] = $config;
     $loader = new Twig_Loader_Filesystem(INSTDIR . '/views');
     $twig = new Twig_Environment($loader, array(
       #'cache' => '/tmp/'
