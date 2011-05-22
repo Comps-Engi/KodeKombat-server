@@ -1,12 +1,27 @@
 {% extends "layout.html" %}
 {% block content %}
-<div id="content">
-  <header>
-    <h1>KodeKombat</h1>
-  </header>
+<header>
+  <h1 class="title"><strong>{</strong>&kappa;ode|&kappa;omb&alpha;t<strong>}</strong><sup class="less-important">&beta;</sup></h1>
+</header>
+<h2 class="subtitle"><strong>KodeKombat</strong> is the online
+    <abbr title="Artificial Intelligence">AI</abbr> contest at
+    <a title="Engineer is the annual technical fest of National Institute of Technology Karnataka, Surathkal" href="http://engineer.org.in/">Engineer 2011</a>.
+</h2>
+<div class="col-one dugout">
+<h2><strong class="icon">&clubs;</strong>How do I play it?</h2>
+<ol>
+  <li><a href="/signup">Sign up</a> for a new account or <a href="/login">log in</a></li>
+  <li>Learn <a href="/game">the ways</a> and write a bot
+  <li><a href="/upload">Upload</a> your bot</li>
+  <li>Reach <a href="/scoreboard">glory</a>!</li>
+</ol>
 </div>
-
-<aside id="sidebar">
-</aside>
+<div class="dugout col-two">
+<h2><strong class="icon">$</strong>Sponsors</h2>
+<p>
+  We are currently testing our game platform to get it to be ready for the event in October, we expect a massive participation in this year's KodeKombat.
+  Meanwhile, you can <a href="mailto:{{ config.email }}">get in touch</a> with us if you are looking to sponsor us.
+</p>
+</div>
 {% endblock %}
 

@@ -1,16 +1,32 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="utf8" />
+    <meta charset="utf-8" />
     {% block head %}
-    <title>{{ title | e }} &larr; KodeKombat</title>
+    <title>{{ title | e }} {KodeKombat}</title>
+
     <link rel="stylesheet/less" href="{{ config.webroot }}/themes/{{ config.theme }}/screen.less" type="text/less">
     <script type="text/javascript" src="{{ config.webroot }}/js/less.min.js"></script>
     {% endblock %}
   </head>
-  <body>
-  <div id="container">
-  {% block content %}{% endblock %}
-  </div>
+  <body class="dark">
+
+    <div id="container">
+      <ul id="nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/game">Game</a></li>
+        <li><a href="/faq">Tutorial</a></li>
+        <li><a href="/scoreboard">Scoreboard</a></li>
+        <form action="/login" class="login">
+          <input type=text name=users-username placeholder="Username">
+          <input type=password name=users-password placeholder="Password">
+        </form>
+      </ul>
+      <div id="content">
+      {% block content %}{% endblock %}
+      </div>
+      <aside id="sidebar">
+      </aside>
+    </div>
   </body>
 </html>

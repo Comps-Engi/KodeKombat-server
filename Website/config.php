@@ -9,3 +9,4 @@ $config['db'] = 'dge';
 $config['logfile'] = '/tmp/dge.log';
 $config['debug'] = true;
 $config['theme'] = 'default';
+$config['email'] = 'connect2shashi@gmail.com';
