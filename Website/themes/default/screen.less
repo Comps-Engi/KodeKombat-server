@@ -53,7 +53,6 @@ body.dark {
   color: white;
   input[type=text], input[type=password] {
     .dark-dugout();
-    width: 130px;
   }
 
   h1 .less-important {
@@ -65,10 +64,7 @@ body.dark {
 body {
   margin:0;
   font-size:16px;
-  font-family: 'trebuchet ms', 'tahoma', arial, georgia;
-}
-body *, body h1 {
-    font-family: 'trebuchet ms', 'tahoma', arial, georgia, monospace;
+  font-family:  'trebuchet ms', 'tahoma', arial, georgia;
 }
 #container {
   width: 780px;
@@ -77,6 +73,7 @@ body *, body h1 {
 
 input[type=text], input[type=password] {
   height: 22px;
+  width: 130px;
   color: white;
   font-size: 16px;
   padding: 6px 12px;
@@ -161,21 +158,28 @@ div.dugout {
 
 .icon {
   margin: 0 10px;
+  font-family: Monaco, monospace, courier;
+  font-weight: bold;
+  font-size: 120%;
 }
 
 .col-one, .col-two {
   padding: 0 20px 10px 20px;
 }
+.col-one p, .col-two p{
+  font-size: 19px;
+  color: #c9c9c9;
+}
 .col-one {
   float: left;
-  width: 340px;
+  width: 345px;
   .rounded(4px);
 }
 
 .col-two {
   float: left;
   margin-left: 10px;
-  width: 350px;
+  width: 345px;
   .rounded(4px);
 }
 
@@ -184,4 +188,77 @@ hr {
   clear: both;
   display: block;
 }
+.clear {
+  clear: both;
+  height: 20px;
+}
 
+.signup-link {
+  text-align: center;
+  font-size: 2.4em;
+  color: #555;
+}
+
+.instructions {
+  font-size: 33px;
+  text-align: center;
+  font-family: georgia, 'dejavu serif';
+  .number {
+    font-size: 180%;
+    color: #555
+    ;
+  }
+}
+
+hr {
+  .line-emboss();
+  border-bottom: 1px solid black;
+  margin: 10px 0;
+}
+
+.footer {
+  text-align: center;
+  font-weight: bold;
+  span {
+    font-weight: normal;
+    color: #777;
+    font-size: 15px;
+    font-family: georgia;
+    a {
+      color: #999;
+    }
+  }
+  min-height: 30px;
+}
+
+h1.notfoundmsg {
+    text-align: center;
+    font-weight: normal;
+    font-family: georgia;
+}
+
+form#signup{
+  label {
+    display: inline;
+    width: 400px;
+    float: left;
+    height: 25px;
+    text-align: right;
+    margin-right: 12px;
+    font-size: 22px;
+  }
+  input {
+    display: block;
+    height: 25px;
+    margin-top: 12px;
+    .rounded(4px);
+    background: #717171;
+  }
+  input[type=submit] {
+    background: #212121;
+    color: white;
+    font-size: 22px;
+    height: 30px;
+    border: none;
+  }
+}

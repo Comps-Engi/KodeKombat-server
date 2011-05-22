@@ -1,7 +1,7 @@
 <?php
 
 class User extends fActiveRecord {
-    function auth($username, $password) {
+    static function auth($username, $password) {
         return fRecordSet::build(
             array(
                 'username' => $username,

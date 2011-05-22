@@ -1232,26 +1232,22 @@ class Moor {
 			$method = new ReflectionMethod($callback);
 			$class = $method->getDeclaringClass();
 		} catch (ReflectionException $e) {
-		    print_r(self::$messages);
 			self::$messages[] = 'Continue. Method ' . $callback . ' doesn\'t exist.';
 			self::triggerContinue();
 		}
 		
 		if (!$class->isSubclassOf('MoorAbstractController')) {
 			self::$messages[] = 'Continue. Class for method ' . $callback . '. isn\'t a subclass of MoorAbstractController.';
-		    print_r(self::$messages);
 			self::triggerContinue();
 		}
 		
 		if (strpos($method->getName(), '__') === 0) {
 			self::$messages[] = 'Continue. Method ' . $callback . ' looks like magic method.';
-		    print_r(self::$messages);
 			self::triggerContinue();
 		}
 		
 		if (!$method->isPublic()) {
 			self::$messages[] = 'Continue. Method ' . $callback . ' isn\'t public.';
-		    print_r(self::$messages);
 			self::triggerContinue();
 		}
 	}

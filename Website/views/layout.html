@@ -12,21 +12,22 @@
   <body class="dark">
 
     <div id="container">
+    {% block nav %}
       <ul id="nav">
-        <li><a href="/home">Home</a></li>
+        <li><a href="/">Home</a></li>
         <li><a href="/game">Game</a></li>
-        <li><a href="/faq">Tutorial</a></li>
+        <li><a href="/faq">Matches</a></li>
         <li><a href="/scoreboard">Scoreboard</a></li>
-        <form action="/login" class="login">
-          <input type=text name=users-username placeholder="Username">
-          <input type=password name=users-password placeholder="Password">
-        </form>
+        {% include "login.html" %}
       </ul>
+    {% endblock %}
       <div id="content">
       {% block content %}{% endblock %}
       </div>
-      <aside id="sidebar">
-      </aside>
+      <br>
+      <div class="footer">
+      { <span>&copy; 2011 Engineer Comps Committee &middot; <a href="/team">contact</a> &middot; powered by <a href="https://github.com/shashi/combaticus">combaticus</a></span> }
+      </div>
     </div>
   </body>
 </html>

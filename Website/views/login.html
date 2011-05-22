@@ -1,0 +1,8 @@
+{% block login %}
+  {% if not current_user %}
+  <form title="Login" action="/login" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
+    <input type="text" name="users-username" placeholder="Username">
+    <input type="password" name="users-password" placeholder="Password">
+  </form>
+  {% endif %}
+{% endblock %}

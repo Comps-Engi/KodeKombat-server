@@ -37,10 +37,10 @@ if (isset($config['routeprefix'])) {
 require_once 'util.php';
 
 $db = new fDatabase('mysql',
-    config('db_host'),
+    config('db'),
     config('db_user'),
     config('db_password'),
-    config('db')
+    config('db_host')
 );
 
 fORMDatabase::attach($db);

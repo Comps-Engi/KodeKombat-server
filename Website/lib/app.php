@@ -1,14 +1,17 @@
 <?php
-
 require_once 'setup.php';
 
 $view = array();
 
-get('/', 'index', function() {
+get('/$', 'index', function() {
     if (fAuthorization::checkLoggedIn()) {
         redirect('profile');
     }
     render('index');
+});
+
+get('/signup$', 'signup', function() {
+    render('signup');
 });
 
 post('/login', 'login', function() {
@@ -25,7 +28,8 @@ post('/login', 'login', function() {
 });
 
 post('/user', 'newuser', function() {
-    $user = User::populate();
+    $user = new User();
+    $user->populate();
     $user->setPassword(
         password_salt($user->getPassword())
     );
@@ -55,3 +59,9 @@ get('/bot/:id', 'showbot', function () {
 post('/bot', 'newbot', function () {
     // TODO: Upload a bot
 });
+
+function not_found () {
+    header('HTTP/1.1 404 Not Found');
+    render('404');
+}
+run_app('not_found');
