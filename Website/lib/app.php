@@ -19,11 +19,15 @@ post('/login', 'login', function() {
     $password = $_POST['users-password'];
 
     if ($user = User::auth($uname, $password)) {
-        fAuthorization::setAccessLevel($user->level);
-        fURL::redirect(fRequest::get('redirect'));
+        fAuthorization::setUserAuthLevel($user->type);
+        if (fRequest::get('redirect')) {
+            fURL::redirect(fRequest::get('redirect'));
+        else {
+            redirect('index');
+        }
     } else {
-        $view['error'] = "Invalid username or password.";
-        render('index');
+        view('error', 'Invalid username or password');
+        render('error');
     }
 });
 
@@ -34,13 +38,19 @@ post('/user', 'newuser', function() {
         password_salt($user->getPassword())
     );
     $user->store();
+    if ($user) {
+        redirect('profile');
+    } else {
+        view('error', 'Could not create user');
+        render('error');
+    }
 });
 
 get('/logout', 'logout', function() {
     fAuthorization::destroyUserInfo();
 });
 
-get('/profile', 'profile', function () {
+get('/profile/:username', 'profile', function () {
     // TODO: Show user's profile
 });
 
@@ -58,6 +68,11 @@ get('/bot/:id', 'showbot', function () {
 
 post('/bot', 'newbot', function () {
     // TODO: Upload a bot
+});
+
+get('/test', 'test', function() {
+    view('error', 'Could not create user');
+    render('error');
 });
 
 function not_found () {

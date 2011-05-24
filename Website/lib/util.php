@@ -91,3 +91,8 @@ function redirect($action, $data=array()) {
 function password_salt($str) {
     return md5($str);
 }
+
+function view($key, $val) {
+    global $view;
+    return $view[$key] = $val;
+}

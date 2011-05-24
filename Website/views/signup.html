@@ -65,11 +65,11 @@ function formvalidate()
     }
   }
 
-  var pass1 = document.getElementsByName("pass1")[0];
-  if(pass1.value=="" || pass1.value==null)
+  var password = document.getElementsByName("password")[0];
+  if(password.value=="" || password.value==null)
   {
     alert("Please enter a password");
-    pass1.focus();
+    password.focus();
     return false;
   }
   else
@@ -77,22 +77,22 @@ function formvalidate()
     if(pass.value.length < 6 || pass.value.length > 10)
     {
       alert('Invalid password. Please choose a password between 6 and 10 characters');
-      pass1.focus();
+      password.focus();
       return false;
     }
   }
 
-  var pass2 = document.getElementsByName("pass2")[0];
-  if(pass2.value=="" || pass2.value==null)
+  var password_repeat = document.getElementsByName("password_repeat")[0];
+  if(password_repeat.value=="" || password_repeat.value==null)
   {
     alert("Please retype your password");
-    pass2.focus();
+    password_repeat.focus();
     return false;
   }
-  else if(pass1.value != pass2.value)
+  else if(password.value != password_repeat.value)
   {
     alert("Passwords do not match");
-    pass1.focus();
+    password.focus();
     return false;
   }
   document.forms["signup"].submit();
@@ -100,14 +100,14 @@ function formvalidate()
 
 function passwordchk()
 {
-  var pass1 = document.getElementsByName("pass1")[0];
-  var pass2 = document.getElementsByName("pass2")[0];
-  if(pass1.value!="")
+  var password = document.getElementsByName("password")[0];
+  var password_repeat = document.getElementsByName("password_repeat")[0];
+  if(password.value!="")
   {
-    if(pass1.value != pass2.value)
-      pass2.style.borderColor="red";
+    if(password.value != password_repeat.value)
+      password_repeat.style.borderColor="red";
     else
-      pass2.style.borderColor="green";
+      password_repeat.style.borderColor="green";
   }
 }
 </script>
@@ -117,10 +117,10 @@ function passwordchk()
 <label>Name</label><input type="text" name="name">
 <label>E-mail id</label><input type="text" name="email" >
 <label>Contact No</label><input type="text" name="contact">
-<label>Username</label><input type="text" name="uname">
+<label>Username</label><input type="text" name="username">
 <!--<input type="button" value="Check Availability" />-->
-<label>Password</label><input type="password" name="pass1">
-<label>Retype Password</label><input type="password" name="pass2" onkeyup="passwordchk()">
+<label>Password</label><input type="password" name="password">
+<label>Retype Password</label><input type="password" name="password_repeat" onkeyup="passwordchk()">
 <label>&nbsp;</label><input type="submit" value="Submit &rarr;" >
 </form>
 {% endblock %}

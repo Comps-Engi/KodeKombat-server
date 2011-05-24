@@ -2,12 +2,10 @@
 
 class User extends fActiveRecord {
     static function auth($username, $password) {
-        return fRecordSet::build(
-            array(
-                'username' => $username,
-                'password' => password_salt($password)
-            )
-        );
+        $user = new self(array('username' => $username));
+
+        return !empty($user) &&
+            ($user->getPassword() == password_salt($password)) ? $user : NULL;
     }
 }
 
