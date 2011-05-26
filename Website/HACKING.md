@@ -20,6 +20,7 @@ create a mysql database and then run this command:
 ```
 mysql -u username -p databasename < schema.sql
 ```
+edit config.php to reflect your database settings.
 restart apache and visit http://kk.dev to see if it is working
 
 ##Hacking
@@ -34,7 +35,7 @@ documentation for more on that.
 
 some utility functions you can use in hacking app.php
 
-php```
+```php
 get('/url/:pattern', 'actionname', function () {
 	/* figure out what to do here */
 	view('argument', $value); // this sets a value for
