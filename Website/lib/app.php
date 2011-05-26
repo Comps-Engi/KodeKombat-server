@@ -3,27 +3,38 @@ require_once 'setup.php';
 
 $view = array();
 
+fAuthorization::setLoginPage('/login');
+
+get('/home', 'home', function () {
+    $user = current_user();
+    $title = sprintf("%s's Dashboard", $user->getUsername());
+    view('title', $title);
+    fAuthorization::requireLoggedIn();
+    render('home');
+});
+
 get('/$', 'index', function() {
-    if (fAuthorization::checkLoggedIn()) {
-        redirect('profile');
+    if (current_user()) {
+        redirect('home');
     }
     render('index');
 });
 
-get('/signup$', 'signup', function() {
+get('signup$', 'signup', function() {
     render('signup');
 });
 
-post('/login', 'login', function() {
+post('login', 'login', function() {
     $uname    = $_POST['users-username'];
     $password = $_POST['users-password'];
 
     if ($user = User::auth($uname, $password)) {
-        fAuthorization::setUserAuthLevel($user->type);
+        fAuthorization::setUserAuthLevel($user->getType());
+        current_user($user);
         if (fRequest::get('redirect')) {
             fURL::redirect(fRequest::get('redirect'));
-        else {
-            redirect('index');
+        } else {
+            redirect('home');
         }
     } else {
         view('error', 'Invalid username or password');
@@ -31,7 +42,7 @@ post('/login', 'login', function() {
     }
 });
 
-post('/user', 'newuser', function() {
+post('user', 'newuser', function() {
     $user = new User();
     $user->populate();
     $user->setPassword(
@@ -46,7 +57,7 @@ post('/user', 'newuser', function() {
     }
 });
 
-get('/logout', 'logout', function() {
+get('logout', 'logout', function() {
     fAuthorization::destroyUserInfo();
 });
 

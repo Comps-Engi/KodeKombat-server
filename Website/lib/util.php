@@ -3,6 +3,7 @@
 class ServerException extends Exception {}
 
 // Utilities
+$_actions = array();
 
 function config($key) {
     global $config;
@@ -34,6 +35,7 @@ function debug($line) {
 $_actions = array();
 
 function get($route, $name, $callback) {
+    global $_actions;
     $_actions[$name] = $route;
 
     if (fRequest::isGet()) {
@@ -42,6 +44,7 @@ function get($route, $name, $callback) {
 }
 
 function post($route, $name, $callback) {
+    global $_actions;
     $_actions[$name] = $route;
 
     if (fRequest::isPost()) {
@@ -54,8 +57,10 @@ function run_app($notfound) {
 }
 
 function url($action, $args) {
-    if (isset($_actions[$name])) {
-        $url = $_actions[$name];
+    global $_actions;
+
+    if (isset($_actions[$action])) {
+        $url = $_actions[$action];
 
         foreach ($args as $key => $val) {
             $url = str_replace(":$key", $val, $url);
@@ -71,6 +76,11 @@ function render($template) {
     if (empty($view['title'])) {
         $view['title'] = ucfirst($template);
     }
+
+    if (empty($view['current_user'])) {
+        $view['current_user'] = current_user();
+    }
+
     $view['config'] = $config;
     $loader = new Twig_Loader_Filesystem(INSTDIR . '/views');
     $twig = new Twig_Environment($loader, array(
@@ -84,6 +94,7 @@ function render($template) {
 }
 
 function redirect($action, $data=array()) {
+    file_put_contents('/tmp/tmppp', url($action, $data));
     fURL::redirect(url($action, $data));
     exit(0);
 }
@@ -95,4 +106,16 @@ function password_salt($str) {
 function view($key, $val) {
     global $view;
     return $view[$key] = $val;
+}
+
+function current_user($user=null) {
+    if ($user instanceof User) {
+        fSession::set('userid', $user->id);
+    }
+    $id = fSession::get('userid', false);
+
+    if ($id) {
+        return new User(intval($id));
+    }
+    return false;
 }
