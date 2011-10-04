@@ -87,19 +87,43 @@ get('/profile/:username', 'profile', function () {
 	view('email', $user->getEmail());
 	view('score', $user->getScore());
 
-	render('profile');
-});
+	$since_id = @$_GET['since'];
+	view('matches', $user->getMatches($since_id));
 
-get('/trial', 'trial', function () {
-    // TODO: Handle match
+	render('profile');
 });
 
 get('/bots', 'listbots', function () {
     // TODO: Show bot
 });
 
-get('/bot/:id', 'showbot', function () {
-    // TODO: Show a bot
+get('/matches', 'matches', function () {
+
+	if (isset($_GET['bot'])) {
+		if (intval($_GET['bot'])) {
+			view('matches', Match::getMatches());
+		}
+	}
+
+	view('matches', Match::getMatches());
+	render('matches');
+});
+
+get('/match/:id', 'match', function() {
+	// TODO: Show game viewer
+});
+
+get('/tutorials', 'tutorials', function() {
+	render('tutorials');
+});
+
+get('/upload', 'upload', function() {
+	if (current_user()) {
+		render('upload');
+	} else {
+		view('error', 'You need to be logged in to upload.');
+		render('error');
+	}
 });
 
 post('/bot', 'newbot', function () {
