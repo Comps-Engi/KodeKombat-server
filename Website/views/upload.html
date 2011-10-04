@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+	<h2>Upload a bot</h2>
+
+<form action="/bot" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <p>
+            <label for="file">File</label>
+            <input id="file" type="file" name="file" />
+	<input type="submit" value="Submit" style="float:right"/>
+        </p>
+    </fieldset>
+
+</form>
+{% endblock %}
+

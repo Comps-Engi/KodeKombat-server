@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-	<dl>
+	<dl class="profile">
 		<dt>Full Name</dt>
 		<dd>{{ fullname }}</dd>
 		<dt>Username</dt>
@@ -10,5 +10,7 @@
 		<dt>Email</dt>
 		<dd>{{ email }}</dd>
 	</dl>
+
+	{% include "match_table.html" %}
 {% endblock %}
 
