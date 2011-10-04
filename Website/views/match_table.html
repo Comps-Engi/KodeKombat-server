@@ -1,0 +1,25 @@
+{% block match_table %}
+  <table>
+    <thead>
+        <tr><th>
+			<td>Match #</td>
+			<td>Time</td>
+            <td>Winner</td>
+            <td>Loser</td>
+        </tr></th>
+    </thead>
+
+    <tbody>
+  {% for match in matches %}
+
+    <tr>
+		<td>{{ match.id }}</td>
+		<td>{{ match.humanTime() }}</td>
+        <td>{{ match.getWinner().getUsername() }}</td>
+		<td>{{ match.getLoser().getUsername() }}</td>
+    <tr>
+	{% endfor %}
+	</tbody>
+  </table>
+
+{% endblock %}

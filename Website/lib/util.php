@@ -19,7 +19,7 @@ function make_url($end) {
     if (!$root) {
         throw new ServerException('Webroot not set');
     }
-    return $root .'/' . $end;
+    return $root . $end;
 }
 
 function debug($line) {
@@ -94,7 +94,6 @@ function render($template) {
 }
 
 function redirect($action, $data=array()) {
-    file_put_contents('/tmp/tmppp', url($action, $data));
     fURL::redirect(url($action, $data));
     exit(0);
 }

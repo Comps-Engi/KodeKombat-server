@@ -7,24 +7,37 @@ fAuthorization::setLoginPage('/login');
 
 get('/home', 'home', function () {
     $user = current_user();
-    $title = sprintf("%s's Dashboard", $user->getUsername());
+	if (!empty($user)) {
+	    $title = sprintf("%s's Dashboard", $user->getUsername());
+	}
     view('title', $title);
     fAuthorization::requireLoggedIn();
     render('home');
 });
 
-get('/$', 'index', function() {
-    if (current_user()) {
-        redirect('home');
+get('/', 'index', function() {
+	$usr = current_user();
+    if (!empty($usr)) {
+        redirect('profile', array('username' => $usr->getUsername()));
     }
-    render('index');
+	redirect('game');
 });
 
-get('signup$', 'signup', function() {
+get('/signup', 'signup', function() {
+
     render('signup');
 });
 
-post('login', 'login', function() {
+get('/game', 'game', function() {
+    render('game');
+});
+
+get('/login', 'login', function() {
+	view('error', 'You need to login to view this page.');
+	render('error');
+});
+
+post('/login', 'login', function() {
     $uname    = $_POST['users-username'];
     $password = $_POST['users-password'];
 
@@ -42,7 +55,7 @@ post('login', 'login', function() {
     }
 });
 
-post('user', 'newuser', function() {
+post('/user', 'newuser', function() {
     $user = new User();
     $user->populate();
     $user->setPassword(
@@ -50,19 +63,31 @@ post('user', 'newuser', function() {
     );
     $user->store();
     if ($user) {
-        redirect('profile');
+        current_user($user);
+        redirect('profile', array('username' => $user->getUsername()));
     } else {
         view('error', 'Could not create user');
         render('error');
     }
 });
 
-get('logout', 'logout', function() {
+get('/logout', 'logout', function() {
     fAuthorization::destroyUserInfo();
+	fSession::set('userid', NULL);
+
+	redirect('index');
 });
 
 get('/profile/:username', 'profile', function () {
     // TODO: Show user's profile
+	$user = new User(array('username' => $_GET['username']));
+
+	view('username', $user->getUsername());
+	view('fullname', $user->getName());
+	view('email', $user->getEmail());
+	view('score', $user->getScore());
+
+	render('profile');
 });
 
 get('/trial', 'trial', function () {
@@ -81,13 +106,9 @@ post('/bot', 'newbot', function () {
     // TODO: Upload a bot
 });
 
-get('/test', 'test', function() {
-    view('error', 'Could not create user');
-    render('error');
-});
-
 function not_found () {
     header('HTTP/1.1 404 Not Found');
     render('404');
 }
+
 run_app('not_found');

@@ -2,9 +2,9 @@
  * Use ActiveRecord conventions
  */
 
-drop database if exists dge;
-create database dge character set=utf8;
-use dge;
+drop database if exists combaticus;
+create database combaticus character set=utf8;
+use combaticus;
 
 drop table if exists bots;
 create table bots (
@@ -40,6 +40,7 @@ drop table if exists matches;
 
 create table matches (
   id int(10) not null auto_increment,
+  timestamp timestamp not null default current_timestamp,
   player_one_id int(10) not null,
   player_two_id int(10) not null,
   trace mediumblob,
