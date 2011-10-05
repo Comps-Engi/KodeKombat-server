@@ -2,10 +2,6 @@
  * Use ActiveRecord conventions
  */
 
-drop database if exists combaticus;
-create database combaticus character set=utf8;
-use combaticus;
-
 drop table if exists users;
 create table users (
   id int(11) not null auto_increment,
