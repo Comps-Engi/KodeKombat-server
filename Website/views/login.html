@@ -1,13 +1,13 @@
 {% block login %}
   {% if not current_user %}
-  <form title="Login" action="/login" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
+  <form title="Login" action="{{ config.webroot }}/login" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
     <input type="text" name="users-username" placeholder="Username">
     <input type="password" name="users-password" placeholder="Password">
   </form>
 
   {% else %}
   <span style="float:right">
-  <a href="{{ current_user.getProfileUrl() }}">{{ current_user.getUsername() }}</a> &middot; <a href="logout">logout</a>
+  <a href="{{ current_user.getProfileUrl() }}">{{ current_user.getUsername() }}</a> &middot; <a href="{{ config.webroot }}/logout">logout</a>
   </span>
   {% endif %}
 {% endblock %}
