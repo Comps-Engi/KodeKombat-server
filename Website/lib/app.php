@@ -5,7 +5,9 @@ $view = array();
 
 fAuthorization::setLoginPage('/login');
 
-get('/home', 'home', function () {
+// Home
+
+function home() {
     $user = current_user();
 	if (!empty($user)) {
 	    $title = sprintf("%s's Dashboard", $user->getUsername());
@@ -13,31 +15,49 @@ get('/home', 'home', function () {
     view('title', $title);
     fAuthorization::requireLoggedIn();
     render('home');
-});
+}
 
-get('/', 'index', function() {
+get('/home', 'home', 'home');
+
+// Index
+
+function index() {
 	$usr = current_user();
     if (!empty($usr)) {
         redirect('profile', array('username' => $usr->getUsername()));
     }
 	redirect('game');
-});
+}
 
-get('/signup', 'signup', function() {
+get('/', 'index', 'index');
+
+// Signup
+
+function signup() {
 
     render('signup');
-});
+}
+get('/signup', 'signup', 'signup');
 
-get('/game', 'game', function() {
+// Game
+
+function game() {
     render('game');
-});
+}
 
-get('/login', 'login', function() {
+get('/game', 'game', 'game');
+
+// Login Page
+
+function login() {
 	view('error', 'You need to login to view this page.');
 	render('error');
-});
+}
+get('/login', 'login', 'login');
 
-post('/login', 'login', function() {
+// Login Action
+
+function post_login() {
     $uname    = $_POST['users-username'];
     $password = $_POST['users-password'];
 
@@ -53,9 +73,13 @@ post('/login', 'login', function() {
         view('error', 'Invalid username or password');
         render('error');
     }
-});
+}
 
-post('/user', 'newuser', function() {
+post('/login', 'login', 'post_login');
+
+// New user
+
+function post_user() {
     $user = new User();
     $user->populate();
     $user->setPassword(
@@ -69,7 +93,8 @@ post('/user', 'newuser', function() {
         view('error', 'Could not create user');
         render('error');
     }
-});
+}
+post('/user', 'newuser', 'post_user');
 
 get('/logout', 'logout', function() {
     fAuthorization::destroyUserInfo();
@@ -78,8 +103,9 @@ get('/logout', 'logout', function() {
 	redirect('index');
 });
 
-get('/profile/:username', 'profile', function () {
-    // TODO: Show user's profile
+// Profile
+
+function show_profile() {
 	$user = new User(array('username' => $_GET['username']));
 
 	view('username', $user->getUsername());
@@ -91,13 +117,13 @@ get('/profile/:username', 'profile', function () {
 	view('matches', $user->getMatches($since_id));
 
 	render('profile');
-});
+}
+get('/profile/:username', 'profile', 'show_profile');
 
-get('/bots', 'listbots', function () {
-    // TODO: Show bot
-});
 
-get('/matches', 'matches', function () {
+// Show matches
+
+function show_matches() {
 
 	if (isset($_GET['bot'])) {
 		if (intval($_GET['bot'])) {
@@ -107,29 +133,46 @@ get('/matches', 'matches', function () {
 
 	view('matches', Match::getMatches());
 	render('matches');
-});
+}
 
-get('/match/:id', 'match', function() {
+get('/matches', 'matches', 'show_matches');
+
+// Match viewer
+
+function show_viewer() {
 	// TODO: Show game viewer
-});
+}
+get('/match/:id', 'match', 'show_viewer');
 
-get('/tutorials', 'tutorials', function() {
+// Tutorials
+
+function tutorials() {
 	render('tutorials');
-});
+}
+get('/tutorials', 'tutorials', 'tutorials');
 
-get('/upload', 'upload', function() {
+// Upload page
+
+function upload() {
 	if (current_user()) {
 		render('upload');
 	} else {
 		view('error', 'You need to be logged in to upload.');
 		render('error');
 	}
-});
+}
+get('/upload', 'upload', 'upload' );
 
-post('/bot', 'newbot', function () {
-    // TODO: Upload a bot
-});
+// New Bot
 
+function newbot() {
+	// TODO: Upload a bot
+}
+
+post('/bot', 'newbot', 'newbot');
+
+
+// Not found page
 function not_found () {
     header('HTTP/1.1 404 Not Found');
     render('404');
