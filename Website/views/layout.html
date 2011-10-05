@@ -14,9 +14,9 @@
     <div id="container">
     {% block nav %}
       <ul id="nav">
-        <li><a href="/game">Game</a></li>
-        <li><a href="/matches">Matches</a></li>
-        <li><a href="/scoreboard">Scoreboard</a></li>
+        <li><a href="{{ config.webroot }}/game">Game</a></li>
+        <li><a href="{{ config.webroot }}/matches">Matches</a></li>
+        <li><a href="{{ config.webroot }}/scoreboard">Scoreboard</a></li>
         {% include "login.html" %}
       </ul>
     {% endblock %}
@@ -25,7 +25,7 @@
       </div>
       <br>
       <div class="footer">
-      { <span>&copy; 2011 Engineer Comps Committee &middot; <a href="/team">contact</a> &middot; powered by <a href="https://github.com/shashi/combaticus">combaticus</a></span> }
+      { <span>&copy; 2011 Engineer Comps Committee &middot; <a href="{{ config.webroot }}/team">contact</a> &middot; powered by <a href="https://github.com/shashi/combaticus">combaticus</a></span> }
       </div>
     </div>
   </body>
