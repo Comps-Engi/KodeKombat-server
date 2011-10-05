@@ -1,4 +1,7 @@
 <?php
+
+define('PAGINATION', 20);
+
 require_once 'setup.php';
 
 $view = array();
@@ -140,6 +143,24 @@ function show_matches() {
 }
 
 get('/matches', 'matches', 'show_matches');
+
+// Leaderboard
+
+function scoreboard() {
+	if (isset($_GET['page'])) {
+		$page = intval($_GET['page']);
+	} else {
+		$page = 1;
+	}
+
+	$offset = ($page - 1) * PAGINATION;
+	$users = User::getHighScorers($offset, PAGINATION);
+
+	view('scoreboard_users', $users);
+	render('scoreboard');
+}
+
+get('/scoreboard', 'scoreboard', 'scoreboard');
 
 // Match viewer
 

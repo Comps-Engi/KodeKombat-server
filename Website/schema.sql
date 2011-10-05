@@ -6,6 +6,7 @@ drop table if exists users;
 create table users (
   id int(11) not null auto_increment,
   name varchar(255) not null,
+  score int(11) not null default 0,
   email varchar(255) not null,
   contact varchar(31) default null,
   username varchar(255) not null,

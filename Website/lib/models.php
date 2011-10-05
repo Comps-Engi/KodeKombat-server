@@ -20,6 +20,10 @@ class User extends fActiveRecord {
         return 0;
     }
 
+	static function getHighScorers($offset, $limit) {
+		return fRecordSet::build('User', array(), array('score' => 'desc'));
+	}
+
     function getProfileUrl() {
         return url("profile", array('username' => $this->getUsername()));
     }

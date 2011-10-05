@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+	<table class="scoreboard">
+		<thead>
+			<tr>
+			<td>Name</td>
+			<td>Score</td>
+			</tr>
+		</thead>
+		<tbody>
+	{% for user in scoreboard_users %}
+		<tr>
+			<td>{{ user.getUsername() }}</td>
+			<td>{{ user.getScore() }}</td>
+		</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
