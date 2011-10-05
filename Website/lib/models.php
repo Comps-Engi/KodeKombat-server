@@ -38,7 +38,8 @@ class Match extends fActiveRecord {
 	public $loser;
 
 	function __construct() {
-		call_user_func_array(array('parent', '__construct'), func_get_args());
+		$args = func_get_args();
+		call_user_func_array(array('parent', '__construct'), $args);
 		$this->winner = $this->getWinner();
 		$this->loser = $this->getLoser();
 	}
