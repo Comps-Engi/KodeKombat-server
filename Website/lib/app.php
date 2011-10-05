@@ -167,6 +167,14 @@ function upload() {
 }
 get('/upload', 'upload', 'upload' );
 
+// FAQ
+
+function faq() {
+	render('faq');
+}
+
+get('/faq', 'faq', 'faq');
+
 // New Bot
 
 function newbot() {
