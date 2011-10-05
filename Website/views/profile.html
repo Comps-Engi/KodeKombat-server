@@ -1,16 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
+
+	<h2>Profile</h2>
 	<dl class="profile">
 		<dt>Full Name</dt>
 		<dd>{{ fullname }}</dd>
-		<dt>Username</dt>
-		<dd>{{ username }}</dd>
-		<dt>Score</dt>
-		<dd>{{ score }}</dd>
 		<dt>Email</dt>
 		<dd>{{ email }}</dd>
+		<dt>Score</dt>
+		<dd>{{ score }}</dd>
+		<dt>Rank</dt>
+		<dd>{{ rank }}</dd>
 	</dl>
 
+	<h2>Matches</h2>
 	{% include "match_table.html" %}
+
+	<h2>Bots</h2>
+	{% include "bots_table.html" %}
+
+	<h2>Upload</h2>
+	{% include "upload_form.html" %}
 {% endblock %}
 

@@ -1,9 +1,9 @@
 <?php
 
 class User extends fActiveRecord {
-    static function auth($username, $password) {
+    static function auth($email, $password) {
 		try {
-	        $user = new self(array('username' => $username));
+	        $user = new self(array('email' => $email));
 
 	        return !empty($user) &&
     	        ($user->getPassword() == password_salt($password)) ? $user : NULL;
@@ -16,23 +16,28 @@ class User extends fActiveRecord {
 		return Match::getMatchesByUser($this->getId(), $since_id);
 	}
 
-    function getScore() {
-        return 0;
-    }
-
 	static function getHighScorers($offset, $limit) {
 		return fRecordSet::build('User', array(), array('score' => 'desc'));
 	}
 
+	function getRank() {
+		$better = fRecordSet::build('User', array('score>=' => $this->getScore()));
+		return $better->count();
+	}
+
+	function getBots() {
+		return fRecordSet::build('Bot', array('user_id='=> $this->getId()), array('timestamp' => 'desc'));
+	}
+
     function getProfileUrl() {
-        return url("profile", array('username' => $this->getUsername()));
+        return url("profile", array('id' => $this->getId()));
     }
 }
 
 class Bot extends fActiveRecord {
 
 	function getUrl() {
-		return url('matches') . '?bot=' . $this->id;
+		return url('matches', array()) . '?bot=' . $this->getId();
 	}
 }
 

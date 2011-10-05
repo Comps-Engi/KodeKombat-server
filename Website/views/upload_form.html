@@ -1,0 +1,13 @@
+{% block upload_form %}
+
+<form class="upload_form" action="{{ config.webroot }}/bots" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <p>
+            <label for="bot_file">File (compressed)</label>
+            <input id="bot_file" type="file" name="bot_file" />
+	<input type="submit" value="Submit" style="float:right"/>
+        </p>
+    </fieldset>
+
+</form>
+{% endblock %}

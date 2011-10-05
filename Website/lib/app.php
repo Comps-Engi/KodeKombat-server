@@ -13,7 +13,7 @@ fAuthorization::setLoginPage('/login');
 function home() {
     $user = current_user();
 	if (!empty($user)) {
-	    $title = sprintf("%s's Dashboard", $user->getUsername());
+	    $title = sprintf("%s's Dashboard", $user->getName());
 	}
     view('title', $title);
     fAuthorization::requireLoggedIn();
@@ -27,7 +27,7 @@ get('/home', 'home', 'home');
 function index() {
 	$usr = current_user();
     if (!empty($usr)) {
-        redirect('profile', array('username' => $usr->getUsername()));
+        redirect('profile', array('id' => $usr->getId()));
     }
 	redirect('game');
 }
@@ -61,10 +61,10 @@ get('/login', 'login', 'login');
 // Login Action
 
 function post_login() {
-    $uname    = $_POST['users-username'];
+    $email    = $_POST['users-email'];
     $password = $_POST['users-password'];
 
-    if ($user = User::auth($uname, $password)) {
+    if ($user = User::auth($email, $password)) {
         fAuthorization::setUserAuthLevel($user->getType());
         current_user($user);
         if (fRequest::get('redirect')) {
@@ -91,7 +91,7 @@ function post_user() {
     $user->store();
     if ($user) {
         current_user($user);
-        redirect('profile', array('username' => $user->getUsername()));
+        redirect('profile', array('id' => $user->getId()));
     } else {
         view('error', 'Could not create user');
         render('error');
@@ -113,19 +113,32 @@ get('/logout', 'logout', 'logout');
 // Profile
 
 function show_profile() {
-	$user = new User(array('username' => $_GET['username']));
+	if (isset($_GET['id'])) {
+		$id = intval($_GET['id']);
+	} else {
+		view('error', 'No profile ID given.');
+		render('error');
+		return;
+	}
 
-	view('username', $user->getUsername());
-	view('fullname', $user->getName());
-	view('email', $user->getEmail());
-	view('score', $user->getScore());
+	try {
+		$user = new User($id);
 
-	$since_id = @$_GET['since'];
-	view('matches', $user->getMatches($since_id));
+		view('fullname', $user->getName());
+		view('email', $user->getEmail());
+		view('score', $user->getScore());
+		view('rank', $user->getRank());
 
-	render('profile');
+		$since_id = @$_GET['since'];
+		view('matches', $user->getMatches($since_id));
+
+		render('profile');
+	} catch(Exception $e) {
+		view('error', $e->getMessage());
+		render('error');
+	}
 }
-get('/profile/:username', 'profile', 'show_profile');
+get('/profile/:id', 'profile', 'show_profile');
 
 
 // Show matches
@@ -186,6 +199,7 @@ function upload() {
 		render('error');
 	}
 }
+
 get('/upload', 'upload', 'upload' );
 
 // FAQ
@@ -199,10 +213,57 @@ get('/faq', 'faq', 'faq');
 // New Bot
 
 function newbot() {
-	// TODO: Upload a bot
+
+	$uploader = new fUpload();
+
+	$uploader->setMIMETypes(
+		array(
+			'application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip', # zip
+	'application/gzip', 'application/x-gzip', 'application/x-gunzip', 'application/gzipped', 'application/gzip-compressed', 'application/x-compressed', 'application/x-compress', 'gzip/document'),
+  	  	'That file format is not supported.'
+	);
+
+	$uploader->setMaxSize('2m');
+
+	try {
+		$file = $uploader->move(INSTDIR . '/botfiles', 'bot_file');
+
+		$user = current_user();
+		if ($user) {
+			$bot = new Bot();
+			$bot->setFilesize($file->getSize());
+			$bot->setFiletype($file->getExtension());
+			$bot->setFilepath($file->getPath());
+			$bot->setUserId($user->getId());
+		}
+
+		$bot->store();
+		view('message', 'Bot uploaded successfully!');
+		view('bots', $user->getBots());
+		render('bots');
+	} catch (Exception $e) {
+		view('error', $e->getMessage());
+		render('error');
+	}
 }
 
-post('/bot', 'newbot', 'newbot');
+post('/bots', 'newbot', 'newbot');
+
+// Show bots
+
+function show_bots() {
+
+	$user = current_user();
+
+	if ($user) {
+		view('bots', $user->getBots());
+		render('bots');
+	}
+
+	redirect('login');
+}
+
+get('/bots', 'bots', 'show_bots');
 
 
 // Not found page

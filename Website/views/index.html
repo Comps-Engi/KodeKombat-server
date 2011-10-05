@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <header>
-  <h1 class="title"><strong>{</strong>&kappa;ode|&kappa;omb&alpha;t<strong>}</strong><sup class="less-important">&beta;</sup></h1>
+	{% include "logo.html" %}
 </header>
 <h2 class="subtitle"><strong>KodeKombat</strong> is the online
     <abbr title="Artificial Intelligence">AI</abbr> contest at
@@ -26,7 +26,7 @@
 <div class="clear" > </div>
 <hr>
 <div class="instructions">
-  <div><span class="number">1 </span> Learn <a href="{{ config.webroot }}/game">the ways</a>, go through the <a href="tutorials">tutorials</a></div>
+  <div><span class="number">1 </span> Learn the ways, go through the <a href="tutorials">tutorials</a></div>
   <div><span class="number">2 </span> Hack up a bot <a href="{{ config.webroot }}/faq" title="NOT KIDDING!">in your favourite language</a></div>
   <div><span class="number">3 </span><a href="{{ config.webroot }}/upload">Upload</a> your AI program and <a href="{{ config.webroot }}/matches">enter the mazes</a></div>
   <div><span class="number">4 </span>May <a href="{{ config.webroot }}/scoreboard">glory</a> be thine!</div>

@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block content %}
+	{% if message %}{{ message }}{% endif %}
+	{% include "bots_table.html" %}
+{% endblock %}

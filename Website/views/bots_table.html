@@ -1,0 +1,22 @@
+{% block bots %}
+	<table class="bots fullwidth">
+		<thead>
+			<tr>
+			<td>ID</td>
+			<td>Size</td>
+			<td>Score</td>
+			<td>Uploaded</td>
+			</tr>
+		</thead>
+		<tbody>
+	{% for bot in bots %}
+		<tr>
+			<td><a href="{{ bot.getUrl() }}">{{ bot.getId() }}</a></td>
+			<td>{{ bot.getFilesize() }}</td>
+			<td>{{ bot.getScore() }}</td>
+			<td>{{ bot.getTimestamp() }}</td>
+		</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

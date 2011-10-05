@@ -13,17 +13,18 @@ create table users (
   password varchar(255) not null,
   type   varchar(30) default 'user',
   constraint primary key (id),
+  constraint unique key email_key (email),
   constraint unique key username_key (username)
 ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_bin;
 
 drop table if exists bots;
 create table bots (
-  id int(10) not null auto_increment,
+  id int(12) not null auto_increment,
   filesize int(30) not null,
   filetype varchar(10) not null,
   user_id int(10) not null,
   timestamp timestamp not null default current_timestamp,
-  code blob not null,
+  filepath text not null,
   sflag int(11) default null,
   rflag int(11) default null,
   token int(11) default null,
