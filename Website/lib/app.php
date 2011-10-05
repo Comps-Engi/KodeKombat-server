@@ -96,12 +96,16 @@ function post_user() {
 }
 post('/user', 'newuser', 'post_user');
 
-get('/logout', 'logout', function() {
+// Logout
+
+function logout() {
     fAuthorization::destroyUserInfo();
 	fSession::set('userid', NULL);
 
 	redirect('index');
-});
+}
+
+get('/logout', 'logout', 'logout');
 
 // Profile
 
