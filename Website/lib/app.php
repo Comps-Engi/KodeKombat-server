@@ -110,6 +110,14 @@ function logout() {
 
 get('/logout', 'logout', 'logout');
 
+// Problem statement
+
+function problem() {
+	render('problem');
+}
+
+get('/problem', 'problem', 'problem');
+
 // Profile
 
 function show_profile() {
