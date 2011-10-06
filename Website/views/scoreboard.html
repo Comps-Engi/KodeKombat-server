@@ -10,7 +10,7 @@
 		<tbody>
 	{% for user in scoreboard_users %}
 		<tr>
-			<td>{{ user.getUsername() }}</td>
+			<td>{{ user.getName() }}</td>
 			<td>{{ user.getScore() }}</td>
 		</tr>
 	{% endfor %}

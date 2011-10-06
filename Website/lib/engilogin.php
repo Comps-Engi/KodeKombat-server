@@ -1,6 +1,6 @@
 <?php
 
-function engi_user() {
+function engi_user($email) {
 	require_once("constants.php");
 
 	// 1. Create a database connection
@@ -16,8 +16,8 @@ function engi_user() {
 			die("Database selection failed: " . mysql_error());
 	}
 
-	$user_query = sprintf("SELECT Email, `First Name`, `Second Name`, Active FROM users WHERE Email=%s",
-		GetSQLValueString($loginUsername, "text"));
+	$user_query = sprintf("SELECT Email, `First Name`, `Last Name`, Active FROM users WHERE Email='%s'",
+		mysql_real_escape_string($email));
 	$user = mysql_query($user_query, $connection) or die(mysql_error());
 	$foundUser = mysql_num_rows($user);
 	if ($foundUser) {

@@ -109,7 +109,7 @@ function view($key, $val) {
 
 function current_user($user=null) {
     if ($user instanceof User) {
-        fSession::set('userid', $user->id);
+        fSession::set('userid', $user->getId());
     }
     $id = fSession::get('userid', false);
 
@@ -119,13 +119,17 @@ function current_user($user=null) {
 		try {
 			if (isset($_SESSION['logged'])) {
 				$email = $_SESSION['logged'];
-				$user = new User(array('email' => $email));
-
-				if (empty($user)) {
-					return copy_from_engi_site($email);
+				try {
+					$user = new User(array('email' => $email));
+				} catch (Exception $e) {
+					$user = copy_from_engi_site($email);
+					fAuthorization::setUserAuthLevel($user->getType());
+					current_user($user);
+					return $user;
 				}
 			}
 		} catch (Exception $e) {
+				throw $e;
 			return false;
 		}
 	}

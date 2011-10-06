@@ -15,8 +15,8 @@
     <tr>
 		<td>{{ match.getId() }}</td>
 		<td><a href="{{ match.getUrl() }}">{{ match.humanTime() }}</a></td>
-        <td><a href="{{ match.winner.getProfileUrl() }}">{{ match.winner.getUsername() }}</a></td>
-		<td><a href="{{ match.loser.getProfileUrl() }}">{{ match.loser.getUsername() }}</a></td>
+        <td><a href="{{ match.winner.getProfileUrl() }}">{{ match.winner.getName() }}</a></td>
+		<td><a href="{{ match.loser.getProfileUrl() }}">{{ match.loser.getName() }}</a></td>
 </tr>
 	{% endfor %}
 	</tbody>
