@@ -40,7 +40,7 @@ function signup() {
 
     render('signup');
 }
-get('/signup', 'signup', 'signup');
+# get('/signup', 'signup', 'signup');
 
 // Game
 
@@ -97,7 +97,7 @@ function post_user() {
         render('error');
     }
 }
-post('/user', 'newuser', 'post_user');
+# post('/user', 'newuser', 'post_user');
 
 // Logout
 
