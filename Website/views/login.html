@@ -1,8 +1,8 @@
 {% block login %}
   {% if not current_user %}
-  <form title="Login" action="{{ config.webroot }}/login" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
-    <input type="text" name="users-email" placeholder="Email">
-    <input type="password" name="users-password" placeholder="Password">
+  <form title="Login" action="http://engineer.org.in/login.php" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
+    <input type="text" name="login" placeholder="Email">
+    <input type="password" name="pass" placeholder="Password">
   </form>
 
   {% else %}

@@ -9,7 +9,6 @@ create table users (
   score int(11) not null default 0,
   email varchar(255) not null,
   contact varchar(31) default null,
-  username varchar(255) not null,
   password varchar(255) not null,
   type   varchar(30) default 'user',
   constraint primary key (id),

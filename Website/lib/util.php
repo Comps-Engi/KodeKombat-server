@@ -115,6 +115,37 @@ function current_user($user=null) {
 
     if ($id) {
         return new User(intval($id));
-    }
+    } else {
+		try {
+			if (isset($_SESSION['logged'])) {
+				$email = $_SESSION['logged'];
+				$user = new User(array('email' => $email));
+
+				if (empty($user)) {
+					return copy_from_engi_site($email);
+				}
+			}
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
     return false;
+}
+
+// Shady :/
+
+function copy_from_engi_site($email) {
+
+	require_once "engilogin.php";
+
+	$engi_user = engi_user($email);
+	$user = new User();
+	$user->setEmail($email);
+	$user->setName($engi_user['fullname']);
+	$user->setPassword('invalid');
+
+	$user->store();
+
+	return $user;
 }
