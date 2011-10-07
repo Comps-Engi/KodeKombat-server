@@ -192,10 +192,17 @@ get('/match/:id', 'match', 'show_viewer');
 
 // Tutorials
 
-function tutorials() {
-	render('tutorials');
+function tutorial() {
+	render('tutorial');
 }
-get('/tutorials', 'tutorials', 'tutorials');
+get('/tutorial', 'tutorial', 'tutorial');
+
+// Contacts
+
+function contacts() {
+	render('contacts');
+}
+get('/contacts', 'contacts', 'contacts');
 
 // Upload page
 
