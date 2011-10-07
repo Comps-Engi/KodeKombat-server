@@ -12,8 +12,7 @@ create table users (
   password varchar(255) not null,
   type   varchar(30) default 'user',
   constraint primary key (id),
-  constraint unique key email_key (email),
-  constraint unique key username_key (username)
+  constraint unique key email_key (email)
 ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_bin;
 
 drop table if exists bots;

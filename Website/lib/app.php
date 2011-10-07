@@ -243,12 +243,13 @@ function newbot() {
 			$bot->setFiletype($file->getExtension());
 			$bot->setFilepath($file->getPath());
 			$bot->setUserId($user->getId());
+
+			$bot->store();
+			view('message', 'Bot uploaded successfully!');
+			view('bots', $user->getBots());
+			render('bots');
 		}
 
-		$bot->store();
-		view('message', 'Bot uploaded successfully!');
-		view('bots', $user->getBots());
-		render('bots');
 	} catch (Exception $e) {
 		view('error', $e->getMessage());
 		render('error');
