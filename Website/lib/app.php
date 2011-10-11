@@ -12,9 +12,9 @@ fAuthorization::setLoginPage('/login');
 
 function home() {
     $user = current_user();
-	if (!empty($user)) {
-	    $title = sprintf("%s's Dashboard", $user->getName());
-	}
+    if (!empty($user)) {
+        $title = sprintf("%s's Dashboard", $user->getName());
+    }
     view('title', $title);
     fAuthorization::requireLoggedIn();
     render('home');
@@ -25,11 +25,11 @@ get('/home', 'home', 'home');
 // Index
 
 function index() {
-	$usr = current_user();
+    $usr = current_user();
     if (!empty($usr)) {
         redirect('profile', array('id' => $usr->getId()));
     }
-	redirect('game');
+    redirect('game');
 }
 
 get('/', 'index', 'index');
@@ -53,8 +53,8 @@ get('/game', 'game', 'game');
 // Login Page
 
 function login() {
-	view('error', 'You need to login to view this page.');
-	render('error');
+    view('error', 'You need to login to view this page.');
+    render('error');
 }
 get('/login', 'login', 'login');
 
@@ -103,9 +103,10 @@ function post_user() {
 
 function logout() {
     fAuthorization::destroyUserInfo();
-	fSession::set('userid', NULL);
+    fSession::set('userid', NULL);
 
-	redirect('index');
+    header('Location: http://engineer.org.in/logout.php');
+    return 0;
 }
 
 get('/logout', 'logout', 'logout');
@@ -113,7 +114,7 @@ get('/logout', 'logout', 'logout');
 // Problem statement
 
 function problem() {
-	render('problem');
+    render('problem');
 }
 
 get('/problem', 'problem', 'problem');
@@ -121,30 +122,30 @@ get('/problem', 'problem', 'problem');
 // Profile
 
 function show_profile() {
-	if (isset($_GET['id'])) {
-		$id = intval($_GET['id']);
-	} else {
-		view('error', 'No profile ID given.');
-		render('error');
-		return;
-	}
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+    } else {
+        view('error', 'No profile ID given.');
+        render('error');
+        return;
+    }
 
-	try {
-		$user = new User($id);
+    try {
+        $user = new User($id);
 
-		view('fullname', $user->getName());
-		view('email', $user->getEmail());
-		view('score', $user->getScore());
-		view('rank', $user->getRank());
+        view('fullname', $user->getName());
+        view('email', $user->getEmail());
+        view('score', $user->getScore());
+        view('rank', $user->getRank());
 
-		$since_id = @$_GET['since'];
-		view('matches', $user->getMatches($since_id));
+        $since_id = @$_GET['since'];
+        view('matches', $user->getMatches($since_id));
 
-		render('profile');
-	} catch(Exception $e) {
-		view('error', $e->getMessage());
-		render('error');
-	}
+        render('profile');
+    } catch(Exception $e) {
+        view('error', $e->getMessage());
+        render('error');
+    }
 }
 get('/profile/:id', 'profile', 'show_profile');
 
@@ -153,14 +154,14 @@ get('/profile/:id', 'profile', 'show_profile');
 
 function show_matches() {
 
-	if (isset($_GET['bot'])) {
-		if (intval($_GET['bot'])) {
-			view('matches', Match::getMatches());
-		}
-	}
+    if (isset($_GET['bot'])) {
+        if (intval($_GET['bot'])) {
+            view('matches', Match::getMatches());
+        }
+    }
 
-	view('matches', Match::getMatches());
-	render('matches');
+    view('matches', Match::getMatches());
+    render('matches');
 }
 
 get('/matches', 'matches', 'show_matches');
@@ -168,17 +169,17 @@ get('/matches', 'matches', 'show_matches');
 // Leaderboard
 
 function scoreboard() {
-	if (isset($_GET['page'])) {
-		$page = intval($_GET['page']);
-	} else {
-		$page = 1;
-	}
+    if (isset($_GET['page'])) {
+        $page = intval($_GET['page']);
+    } else {
+        $page = 1;
+    }
 
-	$offset = ($page - 1) * PAGINATION;
-	$users = User::getHighScorers($offset, PAGINATION);
+    $offset = ($page - 1) * PAGINATION;
+    $users = User::getHighScorers($offset, PAGINATION);
 
-	view('scoreboard_users', $users);
-	render('scoreboard');
+    view('scoreboard_users', $users);
+    render('scoreboard');
 }
 
 get('/scoreboard', 'scoreboard', 'scoreboard');
@@ -186,33 +187,40 @@ get('/scoreboard', 'scoreboard', 'scoreboard');
 // Match viewer
 
 function show_viewer() {
-	// TODO: Show game viewer
+    // TODO: Show game viewer
 }
 get('/match/:id', 'match', 'show_viewer');
 
 // Tutorials
 
 function tutorial() {
-	render('tutorial');
+    render('tutorial');
 }
 get('/tutorial', 'tutorial', 'tutorial');
+
+//Download
+function download()
+{
+	render('download');
+}
+get('/download','download','download');
 
 // Contacts
 
 function contacts() {
-	render('contacts');
+    render('contacts');
 }
 get('/contacts', 'contacts', 'contacts');
 
 // Upload page
 
 function upload() {
-	if (current_user()) {
-		render('upload');
-	} else {
-		view('error', 'You need to be logged in to upload.');
-		render('error');
-	}
+    if (current_user()) {
+        render('upload');
+    } else {
+        view('error', 'You need to be logged in to upload.');
+        render('error');
+    }
 }
 
 get('/upload', 'upload', 'upload' );
@@ -220,7 +228,7 @@ get('/upload', 'upload', 'upload' );
 // FAQ
 
 function faq() {
-	render('faq');
+    render('faq');
 }
 
 get('/faq', 'faq', 'faq');
@@ -229,38 +237,38 @@ get('/faq', 'faq', 'faq');
 
 function newbot() {
 
-	$uploader = new fUpload();
+    $uploader = new fUpload();
 
-	$uploader->setMIMETypes(
-		array(
-			'application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip', # zip
-	'application/gzip', 'application/x-gzip', 'application/x-gunzip', 'application/gzipped', 'application/gzip-compressed', 'application/x-compressed', 'application/x-compress', 'gzip/document'),
-  	  	'That file format is not supported.'
-	);
+    $uploader->setMIMETypes(
+        array(
+            'application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip', # zip
+    'application/gzip', 'application/x-gzip', 'application/x-gunzip', 'application/gzipped', 'application/gzip-compressed', 'application/x-compressed', 'application/x-compress', 'gzip/document'),
+            'That file format is not supported.'
+    );
 
-	$uploader->setMaxSize('2m');
+    $uploader->setMaxSize('2m');
 
-	try {
-		$file = $uploader->move(INSTDIR . '/botfiles', 'bot_file');
+    try {
+        $file = $uploader->move(INSTDIR . '/botfiles', 'bot_file');
 
-		$user = current_user();
-		if ($user) {
-			$bot = new Bot();
-			$bot->setFilesize($file->getSize());
-			$bot->setFiletype($file->getExtension());
-			$bot->setFilepath($file->getPath());
-			$bot->setUserId($user->getId());
+        $user = current_user();
+        if ($user) {
+            $bot = new Bot();
+            $bot->setFilesize($file->getSize());
+            $bot->setFiletype($file->getExtension());
+            $bot->setFilepath($file->getPath());
+            $bot->setUserId($user->getId());
 
-			$bot->store();
-			view('message', 'Bot uploaded successfully!');
-			view('bots', $user->getBots());
-			render('bots');
-		}
+            $bot->store();
+            view('message', 'Bot uploaded successfully!');
+            view('bots', $user->getBots());
+            render('bots');
+        }
 
-	} catch (Exception $e) {
-		view('error', $e->getMessage());
-		render('error');
-	}
+    } catch (Exception $e) {
+        view('error', $e->getMessage());
+        render('error');
+    }
 }
 
 post('/bots', 'newbot', 'newbot');
@@ -269,14 +277,14 @@ post('/bots', 'newbot', 'newbot');
 
 function show_bots() {
 
-	$user = current_user();
+    $user = current_user();
 
-	if ($user) {
-		view('bots', $user->getBots());
-		render('bots');
-	}
+    if ($user) {
+        view('bots', $user->getBots());
+        render('bots');
+    }
 
-	redirect('login');
+    redirect('login');
 }
 
 get('/bots', 'bots', 'show_bots');

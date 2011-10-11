@@ -111,28 +111,35 @@ function current_user($user=null) {
     if ($user instanceof User) {
         fSession::set('userid', $user->getId());
     }
+
     $id = fSession::get('userid', false);
 
     if ($id) {
         return new User(intval($id));
     } else {
-		try {
-			if (isset($_SESSION['logged'])) {
-				$email = $_SESSION['logged'];
-				try {
-					$user = new User(array('email' => $email));
-				} catch (Exception $e) {
-					$user = copy_from_engi_site($email);
-					fAuthorization::setUserAuthLevel($user->getType());
-					current_user($user);
-					return $user;
-				}
-			}
-		} catch (Exception $e) {
-				throw $e;
-			return false;
-		}
-	}
+        try {
+            if (isset($_SESSION['logged'])) {
+                $email = $_SESSION['logged'];
+                try {
+                    $user = new User(array('email' => $email));
+                    if (!empty($user)) {
+                        fAuthorization::setUserAuthLevel($user->getType());
+                        return $user;
+                    } else {
+                        return false;
+                    }
+                } catch (Exception $e) {
+                    $user = copy_from_engi_site($email);
+                    fAuthorization::setUserAuthLevel($user->getType());
+                    current_user($user);
+                    return $user;
+                }
+            }
+        } catch (Exception $e) {
+                throw $e;
+            return false;
+        }
+    }
 
     return false;
 }
@@ -141,15 +148,15 @@ function current_user($user=null) {
 
 function copy_from_engi_site($email) {
 
-	require_once "engilogin.php";
+    require_once "engilogin.php";
 
-	$engi_user = engi_user($email);
-	$user = new User();
-	$user->setEmail($email);
-	$user->setName($engi_user['fullname']);
-	$user->setPassword('invalid');
+    $engi_user = engi_user($email);
+    $user = new User();
+    $user->setEmail($email);
+    $user->setName($engi_user['fullname']);
+    $user->setPassword('invalid');
 
-	$user->store();
+    $user->store();
 
-	return $user;
+    return $user;
 }

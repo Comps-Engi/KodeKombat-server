@@ -28,7 +28,10 @@ Languages accepted &mdash; Any language that can take input from standard input 
 		<li><code>a, b, c, d</code> &mdash; ghosts of the opponents</li>
 		<li><code>P</code> &mdash; pacman controlled by the player</li>
 		<li><code>p</code> &mdash; pacman of the opponent</li>
-		<li><code>Q</code> &mdash; If both the pacmen coincide</li>
+		<li><code>Q</code> &mdash; player's pacman when it has eaten power pellet</li>
+		<li><code>q</code> &mdash; opponenet's pacman when it has eaten power pellet</li>
+		<li><code>S</code> &mdash; If both the pacmen coincide and player has eaten power pellet</li>
+		<li><code>s</code> &mdash; If both the pacmen coincide and opponent has eaten power pellet</li>
 		<li><code>e</code> &mdash; Pellet</li>
 		<li><code>E</code> &mdash; power pellet</li>
 		<li><code>W</code> &mdash; Wall</li>
@@ -50,15 +53,16 @@ Languages accepted &mdash; Any language that can take input from standard input 
 <h3>Rules</h3>
 <ul>
 <li>Eating a pellet increases score by one</li>
-<li>Eating a power pellet increases score by ten and all the ghosts become inactive for one move, the pacman can eat the ghosts.</li>
+<li>Eating a power pellet increases score by ten and all the ghosts become inactive for next ten moves, the pacman can eat the ghosts.</li>
 <li>The ghosts cannot cross over.</li>
+<li>The player who wins gets a bonus of 50 points</li>
 </ul>
 <h3>Submission of code</h3>
 <ul>
-<li>
 <li>A compressed folder (tar or zip) consisting of the player’s code and the makefile.</li>
 <li>Folder name, the compressed folder name should be the same as the executable i.e the players bot’s name.</li>
 <li>The bot’s name should consist of only alphabets and should not exceed eight characters.</li>
-<li>For further information please refer the <a href="{{ config.webroot }}/tutorials">tutorials</a>.</li>
+<li>For further information please refer the <a href="{{ config.webroot }}/tutorial">tutorials</a>.</li>
 </article>
+<p><a href="{{config.webroot}}/pacman-kk-v0.1.zip"><b>Download the starter package</b></a> (Latest Upload: 5pm, 9th October, 2011)</p>
 {% endblock %}

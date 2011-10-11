@@ -1,8 +1,8 @@
 {% block login %}
   {% if not current_user %}
-  <form title="Login" action="http://engineer.org.in/login.php" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
-    <input type="text" name="login" placeholder="Email">
-    <input type="password" name="pass" placeholder="Password">
+ <form title="Login" action="http://engineer.org.in/login.php?redirect_to=/kodekombat" class="login" method="post" onKeyPress="event.keyCode==13 ? this.submit() : true">
+    <input type="text" name="login" placeholder="Email" title="Email">
+    <input type="password" name="pass" placeholder="Password" title="Password">
   </form>
 
   {% else %}
